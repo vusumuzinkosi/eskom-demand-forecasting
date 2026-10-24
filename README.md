@@ -95,3 +95,22 @@ Test period: the **52 weeks from 7 October 2025 to 5 October 2026**. Each week's
 **Prediction intervals.** Quantile gradient boosting gives a 10th to 90th percentile band. Raw, it covered only 60% of test hours instead of 80%. Quantile models are typically too narrow on new data, so the band was **calibrated** on the 26 weeks before the test year (conformalized quantile regression), widening each side by 201 MW. On the test year it then covered **74%** of hours: much better, but still a little narrow, because the test year was more volatile than the calibration period.
 
 ![Forecast week with interval](figures/forecast_week_with_interval.png)
+
+## 7. What an operator would do with it
+
+![Error by hour and month](figures/error_by_hour_and_month.png)
+
+**Where the forecast goes wrong**
+
+- **Midday is now the hardest hour, not the evening peak.** Errors average about 1,000 MW between 10am and 3pm, against about 400 MW at night. Midday demand on Eskom's system now depends on how much rooftop solar is producing, which depends on clouds. The largest miss of the year, about 5,500 MW too low at 1pm on Tuesday 11 August 2026, is the kind of error an overcast, cold day would cause (weather data would confirm it).
+- **Holidays and bridge days:** 4.9% error on public holidays against 3.0% on ordinary weekdays. The worst days include Family Day, the observed Women's Day, and Friday 25 September 2026, the day after Heritage Day, when many people take leave.
+- **The evening peak is forecast well** (about 720 MW error), but in winter the actual peak went above the upper band in 14% of hours, more than the 10% the band allows.
+- **Errors rose from August 2026,** to around 950 to 1,150 MW a month, as demand became more erratic. In production this would trigger a drift review.
+
+**Recommendations for the control room**
+
+1. **Plan winter evening-peak reserves from the upper band, plus a margin** of a few hundred MW until the interval is recalibrated (it covered 74%, not 80%).
+2. **Add a solar irradiance and cloud-cover forecast for midday.** Rooftop solar has made midday the most uncertain period of the day.
+3. **Review holidays and bridge days by hand**, and add a bridge-day feature.
+4. **Re-forecast daily.** The week-ahead forecast is for deciding which units to have available; the day-ahead update (2.4%) is nearly as accurate as Eskom's own.
+5. **Retrain monthly and monitor drift.**
