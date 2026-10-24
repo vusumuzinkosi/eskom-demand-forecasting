@@ -48,3 +48,16 @@ Definitions from the [Eskom Data Portal glossary](https://www.eskom.co.za/datapo
 ![Load shedding gap](figures/load_shedding_gap.png)
 
 5. **Load shedding is visible** in the gap between residual demand and dispatchable generation: about 1,900 MW on average in 2023, and close to zero (about 36 MW) since April 2024. Nobody knows next week's load shedding in advance, so the gap is not used as a feature.
+
+## 4. Baselines
+
+Test period: the **52 weeks from 7 October 2025 to 5 October 2026**. Each week's 168 hours are forecast using only data from before that week.
+
+| Baseline | How it works | MAPE | MAE |
+|---|---|---|---|
+| Seasonal naive | Each hour = the same hour last week | **3.64%** | 818 MW |
+| Four-week average | Each hour = average of the same hour over the last 4 weeks | 3.70% | 826 MW |
+
+![Baselines example week](figures/baselines_example_week.png)
+
+"Same as last week" is already within about 4%, because the daily and weekly cycles repeat so strongly. Its weakness is predictable: it copies last week's holidays into this week and misses this week's (above, Youth Day on Tuesday 16 June 2026). This is the bar every model has to clear.
