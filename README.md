@@ -78,3 +78,20 @@ Test period: the **52 weeks from 7 October 2025 to 5 October 2026**. Each week's
 - **Gradient boosting** combines both: the calendar and holidays, plus recent demand to set the level. It is **about 15% more accurate than "same as last week"**.
 
 ![Feature importance](figures/feature_importance.png)
+
+## 6. Evaluation
+
+![Model comparison](figures/model_comparison.png)
+
+| Forecast | MAPE | MAE |
+|---|---|---|
+| Seasonal naive, week ahead | 3.64% | 818 MW |
+| Gradient boosting, week ahead | 3.11% | 704 MW |
+| Gradient boosting, **day ahead** | **2.40%** | **540 MW** |
+| **Eskom published forecast** | **2.27%** | **512 MW** |
+
+**A fair comparison with Eskom.** The file does not say when Eskom's forecast values were made. Their small, steady errors suggest they are updated close to the hour, using yesterday's demand, the latest weather forecast and operators' knowledge. So I also ran a **day-ahead** version of the model, which adds demand 24 and 48 hours earlier. At that horizon the model comes within about 0.1 percentage points of Eskom's forecast, **without any weather data**.
+
+**Prediction intervals.** Quantile gradient boosting gives a 10th to 90th percentile band. Raw, it covered only 60% of test hours instead of 80%. Quantile models are typically too narrow on new data, so the band was **calibrated** on the 26 weeks before the test year (conformalized quantile regression), widening each side by 201 MW. On the test year it then covered **74%** of hours: much better, but still a little narrow, because the test year was more volatile than the calibration period.
+
+![Forecast week with interval](figures/forecast_week_with_interval.png)
