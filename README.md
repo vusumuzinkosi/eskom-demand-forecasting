@@ -15,3 +15,20 @@
 - **Benchmarks:** two simple baselines, and Eskom's own published forecast for the same hours.
 
 **Why this is the South African flagship project.** It uses genuine South African data, published by Eskom, on a problem every South African has lived through.
+
+## 2. Data
+
+**Source:** [Eskom Data Portal](https://www.eskom.co.za/dataportal/). The public pages show only the last week, so the full history was requested through the [data request form](https://www.eskom.co.za/dataportal/data-request-form/), which emails a download link. The file covers 1 April 2022 (the earliest date available) to 31 March 2027: **actual values up to 6 October 2026** (39,600 hours, 4.5 years, no gaps) and Eskom's forecasts after that.
+
+The raw file is **not committed** to this repository (Eskom's terms apply). To run the notebooks, request the same data and save the CSV in `data/raw/`.
+
+| Column | Meaning (MW, hourly average) |
+|---|---|
+| `RSA Contracted Demand` | Demand to be supplied by all resources Eskom has contracts with. **The target.** |
+| `Residual Demand` | Demand to be supplied by resources Eskom National Control can dispatch: contracted demand minus wind, solar and other renewables |
+| `RSA Contracted Forecast`, `Residual Forecast` | Eskom's own forecasts of the two demands |
+| `Dispatchable Generation` | What the dispatchable fleet actually generated |
+| `Wind`, `PV`, `CSP`, `Other RE`, `Total RE` | Contracted renewable generation (photovoltaic, concentrated solar, small hydro, biomass, landfill gas) |
+| `... Installed Capacity` | Installed renewable capacity by type |
+
+Definitions from the [Eskom Data Portal glossary](https://www.eskom.co.za/dataportal/glossary/). Two consistency checks pass: contracted minus residual demand equals renewable generation (median difference 0 MW), and residual demand exceeds dispatchable generation only in hours of load shedding (37% of hours, almost all in 2022 and 2023). The demand target therefore appears to include demand that was cut off, so it is consistent before and after load shedding.
