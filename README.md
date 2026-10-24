@@ -1,5 +1,7 @@
 # Eskom Demand Forecasting: How Much Electricity Will South Africa Need Next Week?
 
+![Python](https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white) ![pandas](https://img.shields.io/badge/pandas-150458?style=flat-square&logo=pandas&logoColor=white) ![scikit-learn](https://img.shields.io/badge/scikit--learn-F7931E?style=flat-square&logo=scikitlearn&logoColor=white) ![statsmodels](https://img.shields.io/badge/statsmodels-4051B5?style=flat-square) ![Jupyter](https://img.shields.io/badge/Jupyter-F37626?style=flat-square&logo=jupyter&logoColor=white) ![Status](https://img.shields.io/badge/Status-Complete-2EA44F?style=flat-square)
+
 **A week-ahead forecast of South Africa's hourly electricity demand, built on 4.5 years of Eskom data, that beats the standard baselines and comes within 0.1 percentage points of Eskom's own published forecast at the day-ahead horizon.**
 
 | | |
@@ -167,4 +169,7 @@ figures/               charts used in this README
 data/                  raw and processed data (not committed)
 ```
 
-*Author: Vusumuzi Nkosi ([GitHub](https://github.com/vusumuzinkosi))*
+---
+
+**Vusumuzi Nkosi** · Data Scientist · South Africa<br>
+[Portfolio](https://vusumuzinkosi.github.io) · [LinkedIn](https://linkedin.com/in/vusumuzinkosi) · [GitHub](https://github.com/vusumuzinkosi) · [Email](mailto:vusizwe@rocketmail.com)
