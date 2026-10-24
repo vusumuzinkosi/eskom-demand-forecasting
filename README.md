@@ -61,3 +61,20 @@ Test period: the **52 weeks from 7 October 2025 to 5 October 2026**. Each week's
 ![Baselines example week](figures/baselines_example_week.png)
 
 "Same as last week" is already within about 4%, because the daily and weekly cycles repeat so strongly. Its weakness is predictable: it copies last week's holidays into this week and misses this week's (above, Youth Day on Tuesday 16 June 2026). This is the bar every model has to clear.
+
+## 5. Models
+
+**Features, all known at the time of the forecast:** hour, day of week, month, a smooth day-of-year cycle, South African public holidays (including Sunday-to-Monday moves), the days before and after a holiday, a time trend, and demand at the same hour 1, 2, 3 and 4 weeks earlier. A one-week lag is always known for a forecast up to one week ahead, so nothing leaks.
+
+**Walk-forward validation:** each of the 52 weeks is forecast by a model trained only on data before it; models are retrained every 4 weeks.
+
+| Model (week ahead) | MAPE | MAE | Bias |
+|---|---|---|---|
+| Seasonal naive (baseline) | 3.64% | 818 MW | +15 MW |
+| Calendar regression (ridge, hour x day-type and hour x month) | 5.22% | 1,161 MW | **+887 MW** |
+| **Gradient boosting (calendar + lagged demand)** | **3.11%** | **704 MW** | +31 MW |
+
+- **The calendar regression loses even to the baseline.** Its bias shows why: it over-forecasts by almost 900 MW, because a straight-line trend learned from four years cannot keep up with a decline that is speeding up. Knowing the calendar is not enough without knowing the recent level.
+- **Gradient boosting** combines both: the calendar and holidays, plus recent demand to set the level. It is **about 15% more accurate than "same as last week"**.
+
+![Feature importance](figures/feature_importance.png)
