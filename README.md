@@ -1,5 +1,17 @@
 # Eskom Demand Forecasting: How Much Electricity Will South Africa Need Next Week?
 
+**A week-ahead forecast of South Africa's hourly electricity demand, built on 4.5 years of Eskom data, that beats the standard baselines and comes within 0.1 percentage points of Eskom's own published forecast at the day-ahead horizon.**
+
+| | |
+|---|---|
+| **Question** | How much electricity will South Africa need next week, hour by hour? |
+| **Data** | Eskom Data Portal, hourly, April 2022 to October 2026 (39,600 hours) |
+| **Method** | Gradient boosting on calendar, South African public holidays and lagged demand; walk-forward validation over 52 weeks |
+| **Result** | Week ahead: **3.1% MAPE**, 15% better than "same as last week". Day ahead: **2.4%** vs Eskom's published **2.3%**, without weather data |
+| **Story in the data** | Demand fell about 14% since 2022, and rooftop solar has made **midday**, not the evening peak, the hardest hour to forecast |
+
+![Model comparison](figures/model_comparison.png)
+
 ## 1. Business problem
 
 **Why the forecast matters.** Eskom has to have enough generation ready to meet demand every hour. When demand turns out higher than planned, the control room has two expensive options: run the diesel-fired open-cycle gas turbines (OCGTs), which cost far more per unit of electricity than coal, or reduce load (load shedding). When demand turns out lower than planned, coal units are kept running or on standby for nothing. A better forecast means less diesel, fewer emergencies and lower cost.
@@ -114,3 +126,45 @@ Test period: the **52 weeks from 7 October 2025 to 5 October 2026**. Each week's
 3. **Review holidays and bridge days by hand**, and add a bridge-day feature.
 4. **Re-forecast daily.** The week-ahead forecast is for deciding which units to have available; the day-ahead update (2.4%) is nearly as accurate as Eskom's own.
 5. **Retrain monthly and monitor drift.**
+
+## 8. Limitations
+
+- **No weather data.** Temperature drives winter heating and cloud cover drives rooftop solar; they are the two biggest missing inputs. The model is competitive without them, which is promising, but they would be the first addition.
+- **Eskom's forecast horizon is unknown,** so the comparison with Eskom is indicative. The day-ahead version is the fairest comparison available.
+- **Intervals are slightly too narrow** in the test year (74% coverage for an 80% band).
+- **Structural change is ongoing.** Rooftop solar and private generation keep changing the shape and level of demand; a model like this needs monthly retraining and monitoring.
+- **National total only.** Regional or distribution-level forecasts would need municipal and network data.
+
+## Next steps
+
+- Add South African Weather Service temperature and solar irradiance data, with forecasts for the week ahead.
+- Add a bridge-day feature and school holidays.
+- Forecast the **evening peak** directly as its own target, since that is the hour Eskom plans its peakers around.
+- Try a probabilistic model end to end (for example Prophet or a quantile neural network) and compare its calibration.
+- Estimate the rand value of the improvement using OCGT diesel costs from Eskom's published data.
+
+## How to run
+
+```bash
+git clone https://github.com/vusumuzinkosi/eskom-demand-forecasting.git
+cd eskom-demand-forecasting
+python3 -m venv .venv && source .venv/bin/activate
+pip install -r requirements.txt
+```
+
+1. Request the data at the [Eskom Data Portal data request form](https://www.eskom.co.za/dataportal/data-request-form/): choose the full date range and the Demand Side and Renewables data sets.
+2. Save the CSV from the emailed link in `data/raw/`.
+3. Run the notebooks in order (`jupyter notebook`). The model notebook retrains 13 times per model and takes several minutes.
+
+## Project structure
+
+```
+notebooks/
+  01_explore.ipynb     load, data dictionary, trend, cycles, rooftop solar, holidays, load shedding
+  02_baselines.ipynb   seasonal naive and four-week average, walk-forward set-up
+  03_model.ipynb       calendar regression, gradient boosting, Eskom comparison, intervals, error analysis
+figures/               charts used in this README
+data/                  raw and processed data (not committed)
+```
+
+*Author: Vusumuzi Nkosi ([GitHub](https://github.com/vusumuzinkosi))*
