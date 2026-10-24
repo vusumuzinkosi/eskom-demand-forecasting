@@ -32,3 +32,19 @@ The raw file is **not committed** to this repository (Eskom's terms apply). To r
 | `... Installed Capacity` | Installed renewable capacity by type |
 
 Definitions from the [Eskom Data Portal glossary](https://www.eskom.co.za/dataportal/glossary/). Two consistency checks pass: contracted minus residual demand equals renewable generation (median difference 0 MW), and residual demand exceeds dispatchable generation only in hours of load shedding (37% of hours, almost all in 2022 and 2023). The demand target therefore appears to include demand that was cut off, so it is consistent before and after load shedding.
+
+## 3. What the data shows
+
+![Weekly demand](figures/weekly_demand.png)
+
+1. **Demand on the Eskom system is falling.** Average contracted demand went from about 26.1 GW in 2022 to about 22.5 GW in 2026, roughly 14% lower. A large part of this is rooftop solar behind the meter, which Eskom never sees as demand, plus customers moving to their own generation after years of load shedding. The model has to cope with a level that keeps moving down.
+2. **Strong cycles:** two daily peaks (morning and evening), lower weekends (Sundays about 1.5 GW below weekdays during the day), and a winter peak every June to August.
+
+![Daily profile by year](figures/daily_profile_by_year.png)
+
+3. **The midday dip deepens every year.** Since 2022 midday demand has fallen far faster than the evening peak: the gap between 7pm and noon grew from 2.3 GW in 2022 to 4.0 GW in 2026. Solar panels produce at midday and nothing at 7pm. This is South Africa's version of the "duck curve", and it makes the winter evening peak the critical hour.
+4. **Public holidays** cut daily demand by about 5%, more during working hours.
+
+![Load shedding gap](figures/load_shedding_gap.png)
+
+5. **Load shedding is visible** in the gap between residual demand and dispatchable generation: about 1,900 MW on average in 2023, and close to zero (about 36 MW) since April 2024. Nobody knows next week's load shedding in advance, so the gap is not used as a feature.
